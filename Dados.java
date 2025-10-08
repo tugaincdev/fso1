@@ -91,11 +91,11 @@ public class Dados {
 		this.distancia = distancia;
 	}
 
-	public RobotLegoEV3 getRobot() {
+	public MyRobotLegoEV3 getRobot() {
 		return robot;
 	}
 
-	public void setRobot(RobotLegoEV3 robot) {
+	public void setRobot(MyRobotLegoEV3 robot) {
 		this.robot = robot;
 	}
 
