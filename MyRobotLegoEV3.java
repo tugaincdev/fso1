@@ -11,7 +11,7 @@ public class MyRobotLegoEV3  extends Thread {
 	}
 	
 	
-	public void Reta (int distancia) {
+	public void Reta(int distancia) {
 		Comando c = new Comando(Comando.ID_Reta, distancia);
 		buffer.escrever(c);
 		
@@ -30,11 +30,11 @@ public class MyRobotLegoEV3  extends Thread {
 		return(robot.OpenEV3(nome));
 	}
 	
-	public void Parar (boolean con) {
+	public void Parar(boolean con) {
 		Comando c = new Comando(Comando.ID_Parar, con);	
 		buffer.escrever(c);
 	}
-	public void CloseEV3 () {
+	public void CloseEV3() {
 		robot.CloseEV3();
 		
 	}
