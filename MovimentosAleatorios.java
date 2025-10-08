@@ -27,6 +27,7 @@ public void run() {
 			
 			distancia = (int)(Math.random() * 101);
 			dados.getRobot().Reta(distancia);
+			System.out.println("M.A.: Frente, Distancia=" + distancia + "\n");
 			break;
 			
 		case 2:
@@ -34,12 +35,14 @@ public void run() {
 			raio = (int)(Math.random() * 101);
 			angulo = (int)(Math.random() * 361);
 			dados.getRobot().CurvarEsquerda(dados.getRaio(), dados.getAngulo());
+			System.out.println("M.A.: Esquerda, Angulo=" + angulo + ", Raio=" + raio + "\n");
 			break;
 		case 3:
 			
 			raio = (int)(Math.random() * 101);
 			angulo = (int)(Math.random() * 361);
 			dados.getRobot().CurvarEsquerda(dados.getRaio(), dados.getAngulo());
+			System.out.println("M.A.: Direita, Angulo=" + angulo + ", Raio=" + raio + "\n");
 			break;
 		}
 		dados.getRobot().Parar(false);
