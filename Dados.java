@@ -6,9 +6,9 @@ public class Dados {
 	private GUI_TP1 gui;
 	private String nomeRobot;
 	private ArrayList<String> texto;
-	private int raio, angulo, distancia;
-	private RobotLegoEV3 robot;
-	private boolean onOff;
+	private int raio, angulo, distancia, spinner;
+	private MyRobotLegoEV3 robot;
+	private boolean onOff, onOffAl;
 	
 	public Dados(GUI_TP1 g) {
 		
@@ -19,8 +19,28 @@ public class Dados {
 		angulo = 20;
 		distancia = 20;
 		onOff = false;
-		robot = new RobotLegoEV3();
+		robot = new MyRobotLegoEV3();
+		spinner = 1;
+		onOffAl = false;
 		
+	}
+	
+	public boolean isOnOffAl() {
+		return onOff;
+	}
+
+	public void setOnOffAl(boolean onOffAl) {
+		this.onOffAl = onOffAl;
+	}
+
+	
+	
+	public void setSpinner(int spinner) {
+		this.spinner = spinner;
+	}
+	
+	public int getSpinner() {
+		return spinner;
 	}
 
 	public GUI_TP1 getGui() {
