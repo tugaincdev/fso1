@@ -41,5 +41,37 @@ public class Comando {
 	}
     
     
+    public int getArgID() {
+    	return indent;
+    }
+    
+    public void setID(int newArgID) {
+    	indent = newArgID;
+    }
+    
+	public int getArg1() {
+		return arg1;
+	}
+	
+	public void setArg1(int newArg1) {
+		arg1 = newArg1;
+	}
+	
+	public int getArg2() {
+		return arg1;
+	}
+	
+	public void setArg2(int newArg2) {
+		arg1 = newArg2;
+	} 
+	
+	public boolean getArg1B() {
+		return arg1B;
+	}
+	
+	public void setArg1B(boolean newArg1B) {
+		arg1B = newArg1B;
+	} 
+    
 
 }
