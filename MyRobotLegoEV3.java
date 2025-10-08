@@ -31,12 +31,15 @@ public class MyRobotLegoEV3  extends Thread {
 	public void Parar (boolean con) {
 		Comando c = new Comando(Comando.ID_Parar, con);	
 	}
-	
-	
-	public void parar (boolean b) {
-		
-		
+	public void CloseEV3 () {
+		Comando c = new Comando(Comando.ID_CloseEV3);	
 	}
+	
+
+	
+	
+	
+	
 	
 	
 	
