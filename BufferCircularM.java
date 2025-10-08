@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 
 public class BufferCircularM {
   final int dimBuffer = 16;
@@ -16,10 +17,10 @@ public class BufferCircularM {
 
   public void escrever(Comando c) {
     
-    livres.aquire();
-    acesso.aquire();
+    livres.acquire();
+    acesso.acquire();
     buffer[putBuffer] = c;
-    putBuffer = ++putBuffer % dimBuffer
+    putBuffer = ++putBuffer % dimBuffer;
     acesso.release();
     ocupados.release();
   }
@@ -27,11 +28,11 @@ public class BufferCircularM {
   public String ler() {
 
     Comando c;
-    ocupadas.aquire();
-    acesso.aquire();
+    ocupados.acquire();
+    acesso.acquire();
     c = buffer[getBuffer];
     acesso.release();
     livres.release();
-    return s;
+    return c;
   }
 }
