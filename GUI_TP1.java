@@ -22,6 +22,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class GUI_TP1 extends JFrame {
 
@@ -199,11 +201,27 @@ public class GUI_TP1 extends JFrame {
 		contentPane.add(numeroLabel);
 		
 		JSpinner numeroSpinner = new JSpinner();
+		numeroSpinner.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				int spinner = (Integer) numeroSpinner.getValue();
+	            dados.setSpinner(spinner);
+	            consolePrint("Spinner= " + dados.getSpinner());
+				
+			}
+		});
 		numeroSpinner.setModel(new SpinnerNumberModel(1, 1, 16, 1));
 		numeroSpinner.setBounds(241, 215, 34, 28);
 		contentPane.add(numeroSpinner);
 		
 		JRadioButton movAleatorioRadioButton = new JRadioButton("Movimentos Aleatorios");
+		movAleatorioRadioButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				//SOMETHING HERE?!?!?
+				
+				
+			}
+		});
 		movAleatorioRadioButton.setContentAreaFilled(false);
 		movAleatorioRadioButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		movAleatorioRadioButton.setBounds(281, 212, 181, 32);
@@ -300,6 +318,7 @@ public class GUI_TP1 extends JFrame {
 			}
 		});
 		
+	
 		
 		
 		
