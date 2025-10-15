@@ -127,6 +127,9 @@ public class GUI_TP1 extends JFrame {
 		robotTextFeild.setBounds(405, 16, 34, 19);
 		contentPane.add(robotTextFeild);
 		
+		
+		
+		//FALTA DESLIGAR SIMULADO QUANDO LIGA
 		JCheckBox blueCheckBox = new JCheckBox("Ligar");
 		blueCheckBox.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
@@ -231,6 +234,40 @@ public class GUI_TP1 extends JFrame {
 		consolaLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		consolaLabel.setBounds(38, 230, 61, 31);
 		contentPane.add(consolaLabel);
+		
+		JCheckBox simulateCheckBox = new JCheckBox("Simular");
+		
+		simulateCheckBox.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+
+		    	if (!(simulateCheckBox.isSelected())) {
+		    		
+			    	if(dados.isOnOff()) {	//desliga robot se estiver ligado
+			    		blueCheckBox.setSelected(false);
+	                    dados.getRobot().CloseEV3();
+	                    dados.setOnOff(false);
+			    	}
+			    	
+			    	//add roboSimulado	
+			    	dados.setRobotSimulado(robotSimulado); //idk
+			    	simulateCheckBox.setSelected(true);
+                    consolePrint("open_simulator");
+		    	}
+                else {
+                	dados.setRobotSimulado(null); //idk
+			    	simulateCheckBox.setSelected(false);
+                    consolePrint("close_simulator");
+                }
+
+            }
+		});
+		
+		
+		simulateCheckBox.setContentAreaFilled(false);
+		simulateCheckBox.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		simulateCheckBox.setBounds(10, 41, 93, 21);
+		contentPane.add(simulateCheckBox);
+		
 		
 		//EVENTS
 		
@@ -338,12 +375,4 @@ public class GUI_TP1 extends JFrame {
 	public void consolePrint(String s) {
 		textArea.append(s + "\n");
 	}
-	
-	
-	
-	
-
-	
-	
-	
 }
