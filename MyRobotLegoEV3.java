@@ -1,23 +1,17 @@
 
 public class MyRobotLegoEV3  extends Thread implements iRobotLegoEV3 {
 	RobotLegoEV3 robot;
-	private RobotLegoSimulado robotSimulado;
 	BufferCircularM buffer;
 	private static int VEL_ROBOT = 20;
 	boolean movAlF = false;
 	
 	public MyRobotLegoEV3(){
 		buffer = new BufferCircularM();
-		robot = new RobotLegoEV3();	
+		robot = new RobotLegoEV3(); 
+		
 	}
-
-	public RobotLegoSimulado getRobotSimulado() {
-		return robotSimulado;
-	}
-
-	public void setRobotSimulado(RobotLegoSimulado robot) {
-		this.robotSimulado = robot;
-	}
+	
+	
 	
 	public void Reta(int distancia) {
 		Comando c = new Comando(Comando.ID_Reta, distancia);
@@ -56,51 +50,62 @@ public class MyRobotLegoEV3  extends Thread implements iRobotLegoEV3 {
 	
 	
 	
-	 public void run() {
-		 
+	public void run() {
+	    while (true) {  // loop infinito, só termina se o programa encerrar
+	        try {
+	            System.out.println("Thread do robô aguardando comando...");
 
-		
-		try {
-			Comando c = buffer.ler();
-			
-			
-			
-			//public static int ID_Reta = 1;
-			//public static int ID_CurvarEsquerda = 2;
-			//public static int ID_CurvarDireita = 3;
-			//public static int ID_Parar = 0;
-			//public static int ID_LigarID = 4;
-			//public static int ID_OpenEV3 = 5;
-			//public static int ID_CloseEV3 = 6;
-			
-			
-			
-			
-			switch (c.getArgID()) {
-				case 1:
-					robot.Reta(c.getArg1());
-					long tempoReta = (long) (Math.abs(c.getArg1()) / VEL_ROBOT * 1000) + 100;
-					Thread.sleep(tempoReta);
-					break;
-				case 2:
-					robot.CurvarEsquerda(c.getArg1(), c.getArg2());
-					long tempoEsq = (long) (c.getArg2() * Math.toRadians(c.getArg1()) / VEL_ROBOT * 1000) + 100;
-					Thread.sleep(tempoEsq);
-					break;
-				case 3:
-					robot.CurvarDireita(c.getArg1(), c.getArg2());
-					long tempoDir = (long) (c.getArg2() * Math.toRadians(c.getArg1()) / VEL_ROBOT * 1000) + 100;
-					Thread.sleep(tempoDir);
-					break;
-				case 0:
-					robot.Parar(c.getArg1B());
-					Thread.sleep(100);
-					break;	
-			} 
-			
-		} catch(InterruptedException e) {
-			 Thread.currentThread().interrupt(); 
-			 System.err.println("Thread interrupted while writing to buffer: " + e.getMessage());
-		}	    	
-    }
+	            Comando c = buffer.ler();  // BLOQUEIA até um comando chegar
+
+	            if (c == null) {
+	                System.out.println("Comando nulo recebido. Continuando a esperar...");
+	                continue; // Em vez de parar, volta a esperar
+	            }
+
+	            switch (c.getArgID()) {
+	                case 1:
+	                    System.out.println("Executando RETA de " + c.getArg1() + " cm");
+	                    robot.Reta(c.getArg1());
+	                    Thread.sleep((long) (Math.abs(c.getArg1()) / VEL_ROBOT * 1000) + 100);
+	                    break;
+
+	                case 2:
+	                    System.out.println("Executando CURVA ESQUERDA...");
+	                    robot.CurvarEsquerda(c.getArg1(), c.getArg2());
+	                    Thread.sleep((long) (c.getArg2() * Math.toRadians(c.getArg1()) / VEL_ROBOT * 1000) + 100);
+	                    break;
+
+	                case 3:
+	                    System.out.println("Executando CURVA DIREITA...");
+	                    robot.CurvarDireita(c.getArg1(), c.getArg2());
+	                    Thread.sleep((long) (c.getArg2() * Math.toRadians(c.getArg1()) / VEL_ROBOT * 1000) + 100);
+	                    break;
+
+	                case 0:
+	                    System.out.println("Executando PARAR: con=" + c.getArg1B());
+	                    robot.Parar(c.getArg1B());
+	                    Thread.sleep(100);
+	                    // Não finaliza mais
+	                    break;
+
+	                default:
+	                    System.out.println("Comando desconhecido: " + c.getArgID() + " - Ignorando.");
+	                    break;
+	            }
+
+	           
+
+	        } catch (InterruptedException e) {
+	            Thread.currentThread().interrupt();
+	            System.err.println("Thread do robô interrompida: " + e.getMessage());
+	            break; // aqui sim pode sair, se o programa quiser terminar mesmo
+	        } catch (Exception e) {
+	            System.err.println("Erro no processamento do comando: " + e.getMessage());
+	            e.printStackTrace();
+	        }
+	    }
+
+	    System.out.println("Thread do robô finalizada.");
+	}
+
 }
