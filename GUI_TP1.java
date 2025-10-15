@@ -1,5 +1,6 @@
 
 
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -239,28 +240,10 @@ public class GUI_TP1 extends JFrame {
 		
 		simulateCheckBox.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-
-		    	if (!(simulateCheckBox.isSelected())) {
-		    		
-			    	if(dados.isOnOff()) {	//desliga robot se estiver ligado
-			    		blueCheckBox.setSelected(false);
-	                    dados.getRobot().CloseEV3();
-	                    dados.setOnOff(false);
-			    	}
-			    	
-			    	//add roboSimulado	
-			    	dados.setRobotSimulado(robotSimulado); //idk
-			    	simulateCheckBox.setSelected(true);
-                    consolePrint("open_simulator");
-		    	}
-                else {
-                	dados.setRobotSimulado(null); //idk
-			    	simulateCheckBox.setSelected(false);
-                    consolePrint("close_simulator");
-                }
-
-            }
+		        dados.setOnOffSimulado(!dados.isOnOffSimulado());
+		    }
 		});
+
 		
 		
 		simulateCheckBox.setContentAreaFilled(false);
