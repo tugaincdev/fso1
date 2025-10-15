@@ -9,7 +9,7 @@ public class Dados {
 	private int raio, angulo, distancia, spinner;
 	private MyRobotLegoEV3 robot;
 	private RobotLegoSimulado robotSimulado;
-	private boolean onOff, onOffAl;
+	private boolean onOff, onOffAl, onOffSimulado;
 	
 	public Dados(GUI_TP1 g) {
 		
@@ -24,6 +24,7 @@ public class Dados {
 		robotSimulado = new RobotLegoSimulado();
 		spinner = 1;
 		onOffAl = false;
+		onOffSimulado = false;
 		
 	}
 	
@@ -115,6 +116,14 @@ public class Dados {
 
 	public void setOnOff(boolean onOff) {
 		this.onOff = onOff;
+	}
+	
+	public boolean isOnOffSimulado() {
+		return onOffSimulado;
+	}
+
+	public void setOnOffSimulado(boolean bob) {
+		this.onOffSimulado = bob;
 	}
 
 }
