@@ -8,7 +8,6 @@ public class Dados {
 	private ArrayList<String> texto;
 	private int raio, angulo, distancia, spinner;
 	private MyRobotLegoEV3 robot;
-	private RobotLegoSimulado robotSimulado;
 	private boolean onOff, onOffAl, onOffSimulado;
 	
 	public Dados(GUI_TP1 g) {
@@ -102,14 +101,6 @@ public class Dados {
 		this.robot = robot;
 	}
 	
-	public RobotLegoSimulado getRobotSimulado() {
-		return robotSimulado;
-	}
-
-	public void setRobotSimulado(RobotLegoSimulado robot) {
-		this.robotSimulado = robot;
-	}
-
 	public boolean isOnOff() {
 		return onOff;
 	}
