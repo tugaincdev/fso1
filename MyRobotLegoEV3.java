@@ -1,5 +1,5 @@
 
-public class MyRobotLegoEV3  extends Thread {
+public class MyRobotLegoEV3  extends Thread implements iRobotLegoEV3 {
 	RobotLegoEV3 robot;
 	BufferCircularM buffer;
 	private static int VEL_ROBOT = 20;
