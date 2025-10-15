@@ -8,6 +8,7 @@ public class Dados {
 	private ArrayList<String> texto;
 	private int raio, angulo, distancia, spinner;
 	private MyRobotLegoEV3 robot;
+	private RobotLegoSimulado robotSimulado;
 	private boolean onOff, onOffAl;
 	
 	public Dados(GUI_TP1 g) {
@@ -20,6 +21,7 @@ public class Dados {
 		distancia = 20;
 		onOff = false;
 		robot = new MyRobotLegoEV3();
+		robotSimulado = new RobotLegoSimulado();
 		spinner = 1;
 		onOffAl = false;
 		
@@ -97,6 +99,14 @@ public class Dados {
 
 	public void setRobot(MyRobotLegoEV3 robot) {
 		this.robot = robot;
+	}
+	
+	public RobotLegoSimulado getRobotSimulado() {
+		return robotSimulado;
+	}
+
+	public void setRobotSimulado(RobotLegoSimulado robot) {
+		this.robotSimulado = robot;
 	}
 
 	public boolean isOnOff() {
