@@ -1,6 +1,7 @@
 
 public class MyRobotLegoEV3  extends Thread implements iRobotLegoEV3 {
 	RobotLegoEV3 robot;
+	private RobotLegoSimulado robotSimulado;
 	BufferCircularM buffer;
 	private static int VEL_ROBOT = 20;
 	boolean movAlF = false;
@@ -9,7 +10,14 @@ public class MyRobotLegoEV3  extends Thread implements iRobotLegoEV3 {
 		buffer = new BufferCircularM();
 		robot = new RobotLegoEV3();	
 	}
-	
+
+	public RobotLegoSimulado getRobotSimulado() {
+		return robotSimulado;
+	}
+
+	public void setRobotSimulado(RobotLegoSimulado robot) {
+		this.robotSimulado = robot;
+	}
 	
 	public void Reta(int distancia) {
 		Comando c = new Comando(Comando.ID_Reta, distancia);
