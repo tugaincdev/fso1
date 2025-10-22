@@ -36,8 +36,15 @@ public class GUI_TP1 extends JFrame {
 	private JTextField robotTextFeild;
 	private Dados dados;
 	private JTextArea textArea;
+	 private MovimentosAleatorios movimentosAl;
 	
-	
+	  public void setMovimentosAl(MovimentosAleatorios movimentosAl) {
+	        this.movimentosAl = movimentosAl;
+	    }
+
+	    public MovimentosAleatorios getMovimentosAl() {
+	        return movimentosAl;
+	    }
 	
 	public void run() {
 		
@@ -220,11 +227,21 @@ public class GUI_TP1 extends JFrame {
 		JRadioButton movAleatorioRadioButton = new JRadioButton("Movimentos Aleatorios");
 		movAleatorioRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				//SOMETHING HERE?!?!?
-				
-				
-			}
+				 if (movAleatorioRadioButton.isSelected()) {
+			            // Start a new thread
+			            movimentosAl = new MovimentosAleatorios();
+			            movimentosAl.setDados(dados);
+			            movimentosAl.start();
+			            System.out.println("Started random movements");
+			        } else {
+			            // Stop the current one
+			            if (movimentosAl != null) {
+			                movimentosAl.stopRunning();
+			                System.out.println("Stopped random movements");
+			            }
+			        }
+			    }
+			
 		});
 		movAleatorioRadioButton.setContentAreaFilled(false);
 		movAleatorioRadioButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -240,9 +257,10 @@ public class GUI_TP1 extends JFrame {
 		
 		simulateCheckBox.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		        dados.setOnOffSimulado(!dados.isOnOffSimulado());
+		    	
 		    }
 		});
+
 
 		
 		
