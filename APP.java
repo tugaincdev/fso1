@@ -16,6 +16,8 @@ public class App  extends Thread{
         gui.setDados(dados);
         
         movimentosAl.setDados(dados);
+        gui.setMovimentosAl(movimentosAl);
+
         
         
     }
