@@ -20,6 +20,7 @@ public class Dados {
 		distancia = 20;
 		onOff = false;
 		robot = new MyRobotLegoEV3();
+		robot.start();
 		spinner = 1;
 		onOffAl = false;
 		onOffSimulado = false;
