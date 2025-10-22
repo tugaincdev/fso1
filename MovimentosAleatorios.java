@@ -30,21 +30,21 @@ public void run() {
 		switch (oneTwoThree) {
 		case 1:
 			
-			distancia = (int)(Math.random() * 101);
+			distancia = (int)(10 + Math.random() * 41);
 			dados.getRobot().Reta(distancia);
 			break;
 			
 		case 2:
 			
-			raio = (int)(Math.random() * 101);
-			angulo = (int)(Math.random() * 361);
+			raio = (int)(10 + Math.random() * 21);
+			angulo = (int)(20 + Math.random() * 71);
 			dados.getRobot().CurvarEsquerda(dados.getRaio(), dados.getAngulo());
 			
 			break;
 		case 3:
 			
-			raio = (int)(Math.random() * 101);
-			angulo = (int)(Math.random() * 361);
+			raio = (int)(10 + Math.random() * 21);
+			angulo = (int)(20 + Math.random() * 71);
 			dados.getRobot().CurvarDireita(dados.getRaio(), dados.getAngulo());
 			break;
 		}
