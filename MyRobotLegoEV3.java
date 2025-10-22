@@ -14,6 +14,7 @@ public class MyRobotLegoEV3  extends Thread implements iRobotLegoEV3 {
 	
 	
 	public void Reta(int distancia) {
+		System.out.println("frentebro");
 		Comando c = new Comando(Comando.ID_Reta, distancia);
 		buffer.escrever(c);
 		
