@@ -1,6 +1,7 @@
 
 
 
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -228,13 +229,13 @@ public class GUI_TP1 extends JFrame {
 		movAleatorioRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				 if (movAleatorioRadioButton.isSelected()) {
-			            // Start a new thread
+			            
 			            movimentosAl = new MovimentosAleatorios();
 			            movimentosAl.setDados(dados);
 			            movimentosAl.start();
 			            System.out.println("Started random movements");
 			        } else {
-			            // Stop the current one
+			            
 			            if (movimentosAl != null) {
 			                movimentosAl.stopRunning();
 			                System.out.println("Stopped random movements");
@@ -268,6 +269,30 @@ public class GUI_TP1 extends JFrame {
 		simulateCheckBox.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		simulateCheckBox.setBounds(10, 41, 93, 21);
 		contentPane.add(simulateCheckBox);
+		
+		JButton esquerdaloop = new JButton("around");
+		
+		esquerdaloop.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dados.getRobot().CurvarEsquerda(dados.getRaio(), dados.getAngulo());
+				
+			}
+		});
+		esquerdaloop.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		esquerdaloop.setBackground(new Color(255, 0, 255));
+		esquerdaloop.setBounds(61, 86, 52, 37);
+		contentPane.add(esquerdaloop);
+		
+		JButton direitaloop = new JButton("around");
+		direitaloop.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dados.getRobot().CurvarDireita(dados.getRaio(), dados.getAngulo());
+			}
+		});
+		direitaloop.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		direitaloop.setBackground(new Color(0, 128, 255));
+		direitaloop.setBounds(372, 86, 47, 37);
+		contentPane.add(direitaloop);
 		
 		
 		//EVENTS
@@ -341,6 +366,7 @@ public class GUI_TP1 extends JFrame {
 		pararButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				dados.getRobot().Parar(true);
 				consolePrint("Parou!");
 			}
 		});
