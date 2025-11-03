@@ -186,7 +186,7 @@ public class GUI_TP1 extends JFrame {
 		trasButton.setBounds(180, 164, 119, 37);
 		contentPane.add(trasButton);
 		
-		JButton direitaButton = new JButton("Direita");
+		JButton direitaButton = new JButton("DIREITA");
 		direitaButton.setBackground(new Color(0, 128, 255));
 		direitaButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		direitaButton.setBounds(300, 125, 119, 37);
@@ -270,29 +270,29 @@ public class GUI_TP1 extends JFrame {
 		simulateCheckBox.setBounds(10, 41, 93, 21);
 		contentPane.add(simulateCheckBox);
 		
-		JButton esquerdaloop = new JButton("around");
-		
-		esquerdaloop.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dados.getRobot().CurvarEsquerda(dados.getRaio(), dados.getAngulo());
-				
-			}
-		});
-		esquerdaloop.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		esquerdaloop.setBackground(new Color(255, 0, 255));
-		esquerdaloop.setBounds(61, 86, 52, 37);
-		contentPane.add(esquerdaloop);
-		
-		JButton direitaloop = new JButton("around");
-		direitaloop.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dados.getRobot().CurvarDireita(dados.getRaio(), dados.getAngulo());
-			}
-		});
-		direitaloop.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		direitaloop.setBackground(new Color(0, 128, 255));
-		direitaloop.setBounds(372, 86, 47, 37);
-		contentPane.add(direitaloop);
+JButton esquerdaloop = new JButton("\u21BA");
+        
+        esquerdaloop.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dados.getRobot().CurvarEsquerda(dados.getRaio(), dados.getAngulo());
+                
+            }
+        });
+        esquerdaloop.setFont(new Font("Dialog", Font.PLAIN, 20));
+        esquerdaloop.setBackground(new Color(255, 0, 255));
+        esquerdaloop.setBounds(61, 86, 52, 37);
+        contentPane.add(esquerdaloop);
+        
+        JButton direitaloop = new JButton("\u21BB");
+        direitaloop.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dados.getRobot().CurvarDireita(dados.getRaio(), dados.getAngulo());
+            }
+        });
+        direitaloop.setFont(new Font("Dialog", Font.PLAIN, 20));
+        direitaloop.setBackground(new Color(0, 128, 255));
+        direitaloop.setBounds(367, 86, 52, 37);
+        contentPane.add(direitaloop);
 		
 		
 		//EVENTS
@@ -327,41 +327,68 @@ public class GUI_TP1 extends JFrame {
 		frenteButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				consolePrint("Frente, Distancia=" + dados.getDistancia() + "\n");
-				dados.getRobot().Reta(dados.getDistancia());
-				dados.getRobot().Parar(false);
+				
+				Runnable frenteTarefa = new Runnable() {
+					public void run() {
+						frenteAction();
+					}
+				};
+				new Thread(frenteTarefa).start();
+				
+				
 			}
+			
 		});
 		
 		
 		esquerdaButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				consolePrint("Esquerda, Angulo=" + dados.getAngulo() + ", Raio=" + dados.getRaio() + "\n");
-				dados.getRobot().CurvarEsquerda(dados.getRaio(), dados.getAngulo());
-				dados.getRobot().Parar(false);
+				
+				Runnable esquerdaTarefa = new Runnable() {
+					public void run() {
+						esquerdaAction();
+					}
+				};
+				new Thread(esquerdaTarefa).start();
+				
 			}
 		});
 		
 		direitaButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				consolePrint("Direita, Angulo=" + dados.getAngulo() + ", Raio=" + dados.getRaio() + "\n");
-				dados.getRobot().CurvarDireita(dados.getRaio(), dados.getAngulo());
-				dados.getRobot().Parar(false);
-			}
+				
+				Runnable direitaTarefa = new Runnable() {
+					public void run() {
+						direitaAction();
+					}
+				};
+				new Thread(direitaTarefa).start();
+				
+				
+				
+		    }
+				
+				
+				
+		
 		});
 		
 		
 		trasButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				consolePrint("Tras, Distancia=" + dados.getDistancia() + "\n");
-				int temp = dados.getDistancia();
-				dados.getRobot().Reta(-temp);
-				dados.getRobot().Parar(false);
-			}
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		    	Runnable trasTarefa = new Runnable() {
+					public void run() {
+						trasAction();
+					}
+				};
+				new Thread(trasTarefa).start();
+		        
+		    }
 		});
+		
 		
 		pararButton.addMouseListener(new MouseAdapter() {
 			@Override
@@ -402,4 +429,111 @@ public class GUI_TP1 extends JFrame {
 	public void consolePrint(String s) {
 		textArea.append(s + "\n");
 	}
+	
+	
+	private  void frenteAction() {
+		try {
+        	System.out.println("✅ ACQUIRE TENTANDOOO CONSEGUIDO! Semáforo disponível: " + dados.getSemaforoRobo().availablePermits());
+            dados.getSemaforoRobo().acquire();
+            consolePrint("Frente, Distancia=" + dados.getDistancia() + "\n");
+			dados.getRobot().Reta(dados.getDistancia());
+			dados.getRobot().Parar(false);
+
+		} catch (InterruptedException ex) {
+            ex.printStackTrace();
+        } finally {
+            
+            try {
+	            dados.getSemaforoRobo().release();
+            } catch (Exception ex) {
+                System.err.println("Erro ao liberar semáforo em escrever: " + ex.getMessage());
+            }
+        }
+		
+	}
+		
+		
+		
+	private void esquerdaAction() {
+		try {
+        	System.out.println("✅ ACQUIRE TENTANDOOO CONSEGUIDO! Semáforo disponível: " + dados.getSemaforoRobo().availablePermits());
+            dados.getSemaforoRobo().acquire();
+            consolePrint("Esquerda, Angulo=" + dados.getAngulo() + ", Raio=" + dados.getRaio() + "\n");
+			dados.getRobot().CurvarEsquerda(dados.getRaio(), dados.getAngulo());
+			dados.getRobot().Parar(false);
+
+		} catch (InterruptedException ex) {
+            ex.printStackTrace();
+        } finally {
+            
+            try {
+	            dados.getSemaforoRobo().release();
+            } catch (Exception ex) {
+                System.err.println("Erro ao liberar semáforo em escrever: " + ex.getMessage());
+            }
+        }
+	}
+	
+	
+	private void direitaAction() {
+		try {
+        	System.out.println("✅ ACQUIRE TENTANDOOO CONSEGUIDO! Semáforo disponível: " + dados.getSemaforoRobo().availablePermits());
+            dados.getSemaforoRobo().acquire();
+			consolePrint("Direita, Angulo=" + dados.getAngulo() + ", Raio=" + dados.getRaio() + "\n");
+			dados.getRobot().CurvarDireita(dados.getRaio(), dados.getAngulo());
+			dados.getRobot().Parar(false);
+
+		} catch (InterruptedException ex) {
+            ex.printStackTrace();
+        } finally {
+            
+            try {
+	            dados.getSemaforoRobo().release();
+            } catch (Exception ex) {
+                System.err.println("Erro ao liberar semáforo em escrever: " + ex.getMessage());
+            }
+        }
+	}
+	
+	private void trasAction() {
+		try {
+        	System.out.println("✅ ACQUIRE TENTANDOOO CONSEGUIDO! Semáforo disponível: " + dados.getSemaforoRobo().availablePermits());
+            dados.getSemaforoRobo().acquire();
+            consolePrint("Tras, Distancia=" + dados.getDistancia() + "\n");
+            int temp = dados.getDistancia();
+            dados.getRobot().Reta(-temp);
+            dados.getRobot().Parar(false);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        } finally {
+            
+            try {
+	            dados.getSemaforoRobo().release();
+            } catch (Exception ex) {
+                System.err.println("Erro ao liberar semáforo em escrever: " + ex.getMessage());
+            }
+        }
+	}
+	
+	
+	private void pararAction() {
+		dados.getRobot().Parar(true);
+		consolePrint("Parou!");
+	}
+		
+	
+	
+		
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
