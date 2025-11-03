@@ -14,18 +14,18 @@ public class MyRobotLegoEV3  extends Thread implements iRobotLegoEV3 {
 	
 	
 	public void Reta(int distancia) {
-		System.out.println("frentebro");
+		
 		Comando c = new Comando(Comando.ID_Reta, distancia);
 		buffer.escrever(c);
 		
 	}
-	public void CurvarEsquerda(int angulo, int raio ) {
-		Comando c = new Comando(Comando.ID_CurvarEsquerda, angulo, raio);
+	public void CurvarEsquerda(int raio, int angulo) {
+		Comando c = new Comando(Comando.ID_CurvarEsquerda, raio, angulo);
 		buffer.escrever(c);
 		
 	}
-	public void CurvarDireita(int angulo, int raio ) {
-		Comando c = new Comando(Comando.ID_CurvarDireita, angulo, raio);
+	public void CurvarDireita(int raio, int angulo ) {
+		Comando c = new Comando(Comando.ID_CurvarDireita, raio, angulo);
 		buffer.escrever(c);
 		
 	}
@@ -52,9 +52,9 @@ public class MyRobotLegoEV3  extends Thread implements iRobotLegoEV3 {
 	
 	
 	public void run() {
-	    while (true) {  // loop infinito, só termina se o programa encerrar
+	    while (true) {  
 	        try {
-	            System.out.println("Thread do robô aguardando comando...");
+	           
 
 	            Comando c = buffer.ler();  // BLOQUEIA até um comando chegar
 
@@ -67,19 +67,19 @@ public class MyRobotLegoEV3  extends Thread implements iRobotLegoEV3 {
 	                case 1:
 	                    System.out.println("Executando RETA de " + c.getArg1() + " cm");
 	                    robot.Reta(c.getArg1());
-	                    Thread.sleep((long) (Math.abs(c.getArg1()) / VEL_ROBOT * 1000) + 100);
+	                    Thread.sleep(RobotSleep.calculateSleepForReta(c.getArg1()));
 	                    break;
 
 	                case 2:
 	                    System.out.println("Executando CURVA ESQUERDA...");
 	                    robot.CurvarEsquerda(c.getArg1(), c.getArg2());
-	                    Thread.sleep((long) (c.getArg2() * Math.toRadians(c.getArg1()) / VEL_ROBOT * 1000) + 100);
+	                    Thread.sleep(RobotSleep.calculateSleepForCurva(c.getArg2(), c.getArg1()));
 	                    break;
 
 	                case 3:
 	                    System.out.println("Executando CURVA DIREITA...");
 	                    robot.CurvarDireita(c.getArg1(), c.getArg2());
-	                    Thread.sleep((long) (c.getArg2() * Math.toRadians(c.getArg1()) / VEL_ROBOT * 1000) + 100);
+	                    Thread.sleep(RobotSleep.calculateSleepForCurva(c.getArg2(), c.getArg1()));
 	                    break;
 
 	                case 0:
