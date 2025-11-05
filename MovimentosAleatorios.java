@@ -23,10 +23,17 @@ public void run() {
 	
 	System.out.println("RESULTARRR!!");
 	
+	while(true) {
+		if(running) {
+	
+			
 	
 	
 	try {
-		for (int i = 0; i < dados.getSpinner() && running; i++) {
+		dados.getSemaforoRobo().acquire();
+		System.out.println("Semáforo disponível: " + dados.getSemaforoRobo().availablePermits());
+		
+		for (int i = 0; i < dados.getSpinner(); i++) {
 			
 			oneTwoThree = (int)(Math.random() * 3) + 1;
 
@@ -55,6 +62,7 @@ public void run() {
 				break;
 			}		
 		}
+		dados.getSemaforoRobo().release();
 		dados.getRobot().Parar(false);
         Thread.sleep(100);
 
@@ -64,8 +72,17 @@ public void run() {
     } catch (Exception e) {
         System.err.println("Erro no processamento do comando: " + e.getMessage());
         e.printStackTrace();
+    } finally {
+        
+        try {
+        } catch (Exception e) {
+            System.err.println("Erro ao liberar semáforo em escrever: " + e.getMessage());
+        }
     }
 	
+	
+		}
+	}
 	
 	
 	
