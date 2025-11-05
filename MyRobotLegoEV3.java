@@ -6,6 +6,8 @@ public class MyRobotLegoEV3  extends Thread implements iRobotLegoEV3 {
 	boolean movAlF = false;
 	int sensor = robot.S_1;
 	
+	//criar nova classe sensor aqui
+	
 	public MyRobotLegoEV3(){
 		buffer = new BufferCircularM();
 		robot = new RobotLegoEV3(); 
