@@ -12,5 +12,7 @@ public interface iRobotLegoEV3 {
 	boolean OpenEV3(String s);
 	
 	void CloseEV3();
+	
+	int SensorToque(int sensor);
 
 }
