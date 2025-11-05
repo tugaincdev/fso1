@@ -36,5 +36,11 @@ public class RobotLegoSimulado implements iRobotLegoEV3 {
 		System.out.println("CloseEV3");
 		
 	}
+	
+	@Override
+	public int SensorToque(int sensor) {
+		System.out.println("SensorToque");
+		return 1;
+	}
 
 }
