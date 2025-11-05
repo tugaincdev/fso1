@@ -4,6 +4,7 @@ public class MyRobotLegoEV3  extends Thread implements iRobotLegoEV3 {
 	BufferCircularM buffer;
 	private static int VEL_ROBOT = 20;
 	boolean movAlF = false;
+	int sensor = robot.S_1;
 	
 	public MyRobotLegoEV3(){
 		buffer = new BufferCircularM();
@@ -40,6 +41,10 @@ public class MyRobotLegoEV3  extends Thread implements iRobotLegoEV3 {
 	public void CloseEV3() {
 		robot.CloseEV3();
 		
+	}
+	
+	public int SensorToque(int sensor) {
+		return robot.SensorToque(sensor);
 	}
 	
 	
