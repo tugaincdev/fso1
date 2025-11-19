@@ -470,7 +470,29 @@ JButton esquerdaloop = new JButton("\u21BA");
 		
 		tresPontosButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-				consolePrint("Carregou no botão três pontos \n");
+        		consolePrint("Carregou no botão três pontos \n");
+        		
+                FileDialog dialog = new FileDialog(GUI_TP2_Gravador.this); //this is a file explorer window
+                String path;
+                dialog.setMode(FileDialog.LOAD);
+                dialog.setVisible(true); 
+                
+                
+                
+                //put the fileName in textField if fileIsSelected
+                if (dialog.getFile() != null) {
+                    path = dialog.getDirectory() + dialog.getFile();
+                    consolePrint("User selected the file: " + path + "\n");
+                    ficheiroTextField.setText(path);
+                    
+                } else {
+                    consolePrint("No file selected.\n");
+                }        		
+      		
+        		//click button -> opens file explorer window -> after choosing a file -> file name appears in textBox
+        		//file is .txt with bytes or chars.
+        		//gravar nd reproduzir files will have reads/writes
+        		
         	}
         });
 		
