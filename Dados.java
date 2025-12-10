@@ -1,22 +1,31 @@
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 
+import javax.swing.JFrame;
+
 public class Dados {
-    private GUI_TP1 gui;
+    private JFrame gui;
+    private RecorderThread recorder;
+    private ReplayThread replay;
     private String nomeRobot;
     private ArrayList<String> texto;
     private int raio, angulo, distancia, spinner;
     private MyRobotLegoEV3 robot;
     private RobotLegoSimulado robot1;
-    private boolean onOff, onOffAl, onOffSimulado;
-    private Semaphore semaforoRobo = new Semaphore(1); 
+    private boolean onOff, onOffAl, onOffSimulado, gravadorOn;
+    
+    private GestorRobot gestor;
+
     
 
-    public Dados(GUI_TP1 g) {
+    public Dados(JFrame g) {
 
         nomeRobot = "ZE";
         gui = g;
+       
         texto = new ArrayList<String>();
+        gestor = new GestorRobot();
+        
         raio = 20;
         angulo = 20;
         distancia = 20;
@@ -29,22 +38,36 @@ public class Dados {
         onOff = false;
         onOffAl = false;
         onOffSimulado = false;
+        
+        gravadorOn = false;
     }
 
-    
-    public Semaphore getSemaforoRobo() {
-        return semaforoRobo;
+    public void setGestor(GestorRobot newgestor) {
+    	gestor = newgestor;
+    }
+  
+    public GestorRobot getGestor() {
+    	return gestor;
     }
     
     public MyRobotLegoEV3 getRobot() {
         if (robot == null) {
             robot = new MyRobotLegoEV3();
-            robot.start();
+           
+            
+            
+            
+          
+            
+            robot.start(); 
+            robot.setGestor(gestor);
+            
+           
         }
         return robot;
     }
 
-    // Cria o robô simulado apenas quando necessário
+    
     public RobotLegoSimulado getRobotSimulado() {
         if (robot1 == null) {
             robot1 = new RobotLegoSimulado();
@@ -52,19 +75,17 @@ public class Dados {
         return robot1;
     }
 
-    // Liberta o robô físico da memória
+    
     public void limparRobot() {
         robot = null;
     }
 
-    // Liberta o robô simulado da memória
+   
     public void limparRobotSimulado() {
         robot1 = null;
     }
 
-    // ============================================================
-    // GETTERS & SETTERS
-    // ============================================================
+    
 
     public boolean isOnOffAl() {
         return onOffAl;
@@ -82,12 +103,29 @@ public class Dados {
         return spinner;
     }
 
-    public GUI_TP1 getGui() {
+    public JFrame getGui() {
         return gui;
     }
 
-    public void setGui(GUI_TP1 gui) {
+    public void setGui(JFrame gui) {
         this.gui = gui;
+    }
+    
+    public ReplayThread getReplay() {
+    	return replay;
+    }
+    
+    public void setReplay (ReplayThread replay) {
+    	this.replay = replay;
+    }
+    
+    
+    public RecorderThread getRecorder() {
+    	return recorder;
+    }
+    
+    public void setRecorder (RecorderThread recorder) {
+    	this.recorder = recorder;
     }
 
     public String getNomeRobot() {
