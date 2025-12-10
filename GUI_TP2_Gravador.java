@@ -3,6 +3,7 @@
 
 
 import java.awt.EventQueue;
+import java.awt.FileDialog;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -22,6 +23,7 @@ import javax.swing.JRadioButton;
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.event.ChangeListener;
@@ -44,6 +46,7 @@ public class GUI_TP2_Gravador extends JFrame {
 	private JTextArea textArea;
 	private MovimentosAleatorios movimentosAl;
 	private JTextField ficheiroTextField;
+	private JCheckBox printConsolaCheckBox;
 	
 	  public void setMovimentosAl(MovimentosAleatorios movimentosAl) {
 	        this.movimentosAl = movimentosAl;
@@ -150,12 +153,16 @@ public class GUI_TP2_Gravador extends JFrame {
 		    public void actionPerformed(ActionEvent e) {
 		    	
 		    	if(!dados.isOnOff()) {
+		    		System.out.println("PRIMEIRO IF");
                     if(dados.getRobot().OpenEV3(dados.getNomeRobot())) {
+                    	System.out.println("SEGUNDO IF");
                         dados.setOnOff(true);
+                        System.out.println(dados.isOnOff());
                         consolePrint("open");
                     }
                 }
                 else {
+                	System.out.println("ELSE");
                     dados.getRobot().CloseEV3();
                     dados.setOnOff(false);
                     consolePrint("close");
@@ -306,7 +313,7 @@ JButton esquerdaloop = new JButton("\u21BA");
         robotBox.setBounds(10, 20, 470, 234);
         contentPane.add(robotBox);
         
-        JCheckBox printConsolaCheckBox = new JCheckBox("Imprimir");
+        printConsolaCheckBox = new JCheckBox("Imprimir");
         printConsolaCheckBox.setFont(new Font("Tahoma", Font.PLAIN, 15));
         printConsolaCheckBox.setBackground(new Color(192, 192, 192));
         printConsolaCheckBox.setBounds(241, 478, 93, 21);
@@ -447,7 +454,7 @@ JButton esquerdaloop = new JButton("\u21BA");
 		pararButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				dados.getRobot().Parar(true);
+				dados.getRobot().PararSensor(true);
 				consolePrint("Parou!");
 			}
 		});
@@ -456,8 +463,8 @@ JButton esquerdaloop = new JButton("\u21BA");
 			public void actionPerformed(ActionEvent e) {
 				String nomeRobot = robotTextFeild.getText();
 				dados.setNomeRobot(nomeRobot);
-				consolePrint("Nome do Robo= " + dados.getNomeRobot() + "\n");
-				consolePrint("on and off=" + dados.isOnOff() + "\n");
+				consolePrint("Nome do Robo= " + dados.getNomeRobot());
+				consolePrint("on and off=" + dados.isOnOff());
 				
 				
 			}
@@ -470,9 +477,9 @@ JButton esquerdaloop = new JButton("\u21BA");
 		
 		tresPontosButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		consolePrint("Carregou no botão três pontos \n");
-        		
-                FileDialog dialog = new FileDialog(GUI_TP2_Gravador.this); //this is a file explorer window
+				consolePrint("Carregou no botão três pontos");
+				
+				FileDialog dialog = new FileDialog(GUI_TP2_Gravador.this); //this is a file explorer window
                 String path;
                 dialog.setMode(FileDialog.LOAD);
                 dialog.setVisible(true); 
@@ -482,41 +489,91 @@ JButton esquerdaloop = new JButton("\u21BA");
                 //put the fileName in textField if fileIsSelected
                 if (dialog.getFile() != null) {
                     path = dialog.getDirectory() + dialog.getFile();
-                    consolePrint("User selected the file: " + path + "\n");
+                    consolePrint("Selecionou o ficheiro: " + path);
                     ficheiroTextField.setText(path);
+                    try {
+						dados.getReplay().setFileName(path);
+						dados.getRecorder().setFileName(path);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
                     
                 } else {
-                    consolePrint("No file selected.\n");
+                    consolePrint("Não selecionou nenhum ficheiro");
                 }        		
       		
-        		//click button -> opens file explorer window -> after choosing a file -> file name appears in textBox
-        		//file is .txt with bytes or chars.
-        		//gravar nd reproduzir files will have reads/writes
         		
         	}
         });
 		
+		ficheiroTextField.addActionListener(e -> {
+		    String path = ficheiroTextField.getText().trim();
+		    if (!path.isEmpty()) {
+		        consolePrint("Using new file path from textbox: " + path);
+
+		        try {
+		            // Update both recorder and replay threads
+		            dados.getRecorder().setFileName(path);
+		            dados.getReplay().setFileName(path);
+
+		            consolePrint("File path updated successfully.");
+		        } catch (IOException ex) {
+		            ex.printStackTrace();
+		            consolePrint("Error setting new file path!");
+		        }
+		    } else {
+		        consolePrint("Textbox is empty. No path set.");
+		    }
+		});
+		
 		gravarButton.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-				consolePrint("Carregou no botão gravar do gravador \n");
-        	}
-        });
+		    public void actionPerformed(ActionEvent e) {
+		        
+	            RecorderThread recorder = dados.getRecorder();
+	            if (recorder.getEstado() == Estado.ACTIVE) {
+	                recorder.setEstado(Estado.NOT_ACTIVE);  
+	                consolePrint("Recorder estado NOT_ACTIVE");
+	               
+	            } else {
+	                recorder.setEstado(Estado.ACTIVE);  
+	                consolePrint("Recorder estado ACTIVE");
+	                
+	            }
+	            
+	            
+	            
+	        }
+		    
+		});
 		
 		reproduzirButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-				consolePrint("Carregou no botão reproduzir do gravador \n");
+        		
+        		 ReplayThread replay = dados.getReplay();
+ 	            if (replay.getEstado() == Estado.ACTIVE) {
+ 	                replay.setEstado(Estado.NOT_ACTIVE);  
+ 	                consolePrint("Replay estado NOT_ACTIVE");
+ 	               
+ 	            } else {
+ 	                replay.setEstado(Estado.ACTIVE);  
+ 	                consolePrint("Replay  estado ACTIVE");
+ 	                
+ 	            }
+				
         	}
         });
 		
 		limparConsolaButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-				consolePrint("Carregou no botão limpar consola \n");
+				consolePrint("Carregou no botão limpar consola");
+				textArea.setText("");
         	}
         });
 		
 		printConsolaCheckBox.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-				consolePrint("Carregou na checkBox imprimir da consola \n");
+				consolePrint("Carregou na checkBox imprimir da consola");
         	}
         });
 		
@@ -536,24 +593,25 @@ JButton esquerdaloop = new JButton("\u21BA");
 	}
 	
 	public void consolePrint(String s) {
-		textArea.append(s + "\n");
+		if (printConsolaCheckBox.isSelected()) {
+			textArea.append(s + "\n");
+		}
 	}
 	
 	
 	private  void frenteAction() {
 		try {
-        	System.out.println("✅ ACQUIRE TENTANDOOO CONSEGUIDO! Semáforo disponível: " + dados.getSemaforoRobo().availablePermits());
-            dados.getSemaforoRobo().acquire();
-            consolePrint("Frente, Distancia=" + dados.getDistancia() + "\n");
+        	
+			dados.getGestor().pedirRobot();
+            consolePrint("Frente, Distancia=" + dados.getDistancia());
 			dados.getRobot().Reta(dados.getDistancia());
 			dados.getRobot().Parar(false);
 
-		} catch (InterruptedException ex) {
-            ex.printStackTrace();
-        } finally {
+		} finally {
             
             try {
-	            dados.getSemaforoRobo().release();
+            	dados.getGestor().devolverRobot();
+	           
             } catch (Exception ex) {
                 System.err.println("Erro ao liberar semáforo em escrever: " + ex.getMessage());
             }
@@ -565,18 +623,17 @@ JButton esquerdaloop = new JButton("\u21BA");
 		
 	private void esquerdaAction() {
 		try {
-        	System.out.println("✅ ACQUIRE TENTANDOOO CONSEGUIDO! Semáforo disponível: " + dados.getSemaforoRobo().availablePermits());
-            dados.getSemaforoRobo().acquire();
-            consolePrint("Esquerda, Angulo=" + dados.getAngulo() + ", Raio=" + dados.getRaio() + "\n");
+        	
+			dados.getGestor().pedirRobot();
+            consolePrint("Esquerda, Angulo=" + dados.getAngulo() + ", Raio=" + dados.getRaio());
 			dados.getRobot().CurvarEsquerda(dados.getRaio(), dados.getAngulo());
 			dados.getRobot().Parar(false);
 
-		} catch (InterruptedException ex) {
-            ex.printStackTrace();
-        } finally {
+		} finally {
             
             try {
-	            dados.getSemaforoRobo().release();
+            	dados.getGestor().devolverRobot();
+	            
             } catch (Exception ex) {
                 System.err.println("Erro ao liberar semáforo em escrever: " + ex.getMessage());
             }
@@ -586,18 +643,17 @@ JButton esquerdaloop = new JButton("\u21BA");
 	
 	private void direitaAction() {
 		try {
-        	System.out.println("✅ ACQUIRE TENTANDOOO CONSEGUIDO! Semáforo disponível: " + dados.getSemaforoRobo().availablePermits());
-            dados.getSemaforoRobo().acquire();
-			consolePrint("Direita, Angulo=" + dados.getAngulo() + ", Raio=" + dados.getRaio() + "\n");
+        	
+			dados.getGestor().pedirRobot();
+			consolePrint("Direita, Angulo=" + dados.getAngulo() + ", Raio=" + dados.getRaio());
 			dados.getRobot().CurvarDireita(dados.getRaio(), dados.getAngulo());
 			dados.getRobot().Parar(false);
 
-		} catch (InterruptedException ex) {
-            ex.printStackTrace();
-        } finally {
+		} finally {
             
             try {
-	            dados.getSemaforoRobo().release();
+            	dados.getGestor().devolverRobot();
+	            
             } catch (Exception ex) {
                 System.err.println("Erro ao liberar semáforo em escrever: " + ex.getMessage());
             }
@@ -606,18 +662,17 @@ JButton esquerdaloop = new JButton("\u21BA");
 	
 	private void trasAction() {
 		try {
-        	System.out.println("✅ ACQUIRE TENTANDOOO CONSEGUIDO! Semáforo disponível: " + dados.getSemaforoRobo().availablePermits());
-            dados.getSemaforoRobo().acquire();
-            consolePrint("Tras, Distancia=" + dados.getDistancia() + "\n");
+        	
+			dados.getGestor().pedirRobot();
+            consolePrint("Tras, Distancia=" + dados.getDistancia());
             int temp = dados.getDistancia();
             dados.getRobot().Reta(-temp);
             dados.getRobot().Parar(false);
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
         } finally {
             
             try {
-	            dados.getSemaforoRobo().release();
+            	dados.getGestor().devolverRobot();
+	            
             } catch (Exception ex) {
                 System.err.println("Erro ao liberar semáforo em escrever: " + ex.getMessage());
             }
@@ -626,7 +681,7 @@ JButton esquerdaloop = new JButton("\u21BA");
 	
 	
 	private void pararAction() {
-		dados.getRobot().Parar(true);
+		dados.getRobot().PararSensor(true);
 		consolePrint("Parou!");
 	}
 }
