@@ -111,7 +111,7 @@ public class GUI_TP2_Gravador extends JFrame {
 		
 		raioTextFeild.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		raioTextFeild.setText("20");
-		raioTextFeild.setBounds(61, 30, 34, 19);
+		raioTextFeild.setBounds(64, 30, 34, 19);
 		contentPane.add(raioTextFeild);
 		raioTextFeild.setColumns(10);
 		
@@ -142,7 +142,7 @@ public class GUI_TP2_Gravador extends JFrame {
 		robotTextFeild.setText("ZE");
 		robotTextFeild.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		robotTextFeild.setColumns(10);
-		robotTextFeild.setBounds(402, 30, 34, 19);
+		robotTextFeild.setBounds(405, 30, 34, 19);
 		contentPane.add(robotTextFeild);
 		
 		
