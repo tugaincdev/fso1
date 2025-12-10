@@ -30,10 +30,13 @@ public void run() {
 	
 	
 	try {
-		dados.getSemaforoRobo().acquire();
-		System.out.println("Semáforo disponível: " + dados.getSemaforoRobo().availablePermits());
+		
+		
+		dados.getGestor().pedirRobot();
 		
 		for (int i = 0; i < dados.getSpinner(); i++) {
+			
+			
 			
 			oneTwoThree = (int)(Math.random() * 3) + 1;
 
@@ -42,28 +45,42 @@ public void run() {
 				
 				distancia = (int)(10 + Math.random() * 41);
 				dados.getRobot().Reta(distancia);
+			
 	            Thread.sleep((long) (Math.abs(distancia / VEL_ROBOT * 1000) + 100));
+	            
+	            
 				break;
 				
 			case 2:
 				
 				raio = (int)(10 + Math.random() * 21);
 				angulo = (int)(20 + Math.random() * 71);
-				dados.getRobot().CurvarEsquerda(dados.getRaio(), dados.getAngulo());
+				dados.getRobot().CurvarEsquerda(raio, angulo);
+				
+				
                 Thread.sleep((long) (raio * Math.toRadians(angulo) / VEL_ROBOT * 1000) + 100);
 
 				break;
 			case 3:
 				
+				
 				raio = (int)(10 + Math.random() * 21);
 				angulo = (int)(20 + Math.random() * 71);
-				dados.getRobot().CurvarDireita(dados.getRaio(), dados.getAngulo());
+				dados.getRobot().CurvarDireita(raio, angulo);
+				
+				
                 Thread.sleep((long) (raio * Math.toRadians(angulo) / VEL_ROBOT * 1000) + 100);
 				break;
-			}		
+			}
+			
+			
+			
 		}
-		dados.getSemaforoRobo().release();
+		
+		
+		
 		dados.getRobot().Parar(false);
+		dados.getGestor().devolverRobot();
         Thread.sleep(100);
 
 	} catch (InterruptedException e) {
@@ -73,6 +90,8 @@ public void run() {
         System.err.println("Erro no processamento do comando: " + e.getMessage());
         e.printStackTrace();
     } finally {
+    	
+    	
         
         try {
         } catch (Exception e) {
