@@ -39,6 +39,7 @@ public class GUI_TP1 extends JFrame {
 	private JTextArea textArea;
 	 private MovimentosAleatorios movimentosAl;
 	
+	
 	  public void setMovimentosAl(MovimentosAleatorios movimentosAl) {
 	        this.movimentosAl = movimentosAl;
 	    }
@@ -46,6 +47,8 @@ public class GUI_TP1 extends JFrame {
 	    public MovimentosAleatorios getMovimentosAl() {
 	        return movimentosAl;
 	    }
+	    
+	   
 	
 	public void run() {
 		
@@ -88,12 +91,12 @@ public class GUI_TP1 extends JFrame {
 		raioLable.setBounds(10, 10, 34, 31);
 		contentPane.add(raioLable);
 		
-		JLabel anguloLable = new JLabel("Angulo");
+		JLabel anguloLable = new JLabel("Ângulo");
 		anguloLable.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		anguloLable.setBounds(89, 10, 52, 31);
 		contentPane.add(anguloLable);
 		
-		JLabel distanciaLabel = new JLabel("Distancia");
+		JLabel distanciaLabel = new JLabel("Distância");
 		distanciaLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		distanciaLabel.setBounds(180, 10, 66, 31);
 		contentPane.add(distanciaLabel);
@@ -144,12 +147,16 @@ public class GUI_TP1 extends JFrame {
 		    public void actionPerformed(ActionEvent e) {
 		    	
 		    	if(!dados.isOnOff()) {
+		    		System.out.println("PRIMEIRO IF");
                     if(dados.getRobot().OpenEV3(dados.getNomeRobot())) {
+                    	System.out.println("SEGUNDO IF");
                         dados.setOnOff(true);
                         consolePrint("open");
                     }
+                    
                 }
                 else {
+                	System.out.println("ELSE");
                     dados.getRobot().CloseEV3();
                     dados.setOnOff(false);
                     consolePrint("close");
@@ -176,7 +183,7 @@ public class GUI_TP1 extends JFrame {
 		pararButton.setBounds(180, 125, 119, 37);
 		contentPane.add(pararButton);
 		
-		JButton trasButton = new JButton("TRÀS");
+		JButton trasButton = new JButton("TRÁS");
 		trasButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -393,7 +400,7 @@ JButton esquerdaloop = new JButton("\u21BA");
 		pararButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				dados.getRobot().Parar(true);
+				dados.getRobot().PararSensor(true);
 				consolePrint("Parou!");
 			}
 		});
@@ -433,18 +440,16 @@ JButton esquerdaloop = new JButton("\u21BA");
 	
 	private  void frenteAction() {
 		try {
-        	System.out.println("✅ ACQUIRE TENTANDOOO CONSEGUIDO! Semáforo disponível: " + dados.getSemaforoRobo().availablePermits());
-            dados.getSemaforoRobo().acquire();
+        	
+            dados.getGestor().pedirRobot();
             consolePrint("Frente, Distancia=" + dados.getDistancia() + "\n");
 			dados.getRobot().Reta(dados.getDistancia());
 			dados.getRobot().Parar(false);
 
-		} catch (InterruptedException ex) {
-            ex.printStackTrace();
-        } finally {
+		} finally {
             
             try {
-	            dados.getSemaforoRobo().release();
+	            dados.getGestor().devolverRobot();
             } catch (Exception ex) {
                 System.err.println("Erro ao liberar semáforo em escrever: " + ex.getMessage());
             }
@@ -456,18 +461,16 @@ JButton esquerdaloop = new JButton("\u21BA");
 		
 	private void esquerdaAction() {
 		try {
-        	System.out.println("✅ ACQUIRE TENTANDOOO CONSEGUIDO! Semáforo disponível: " + dados.getSemaforoRobo().availablePermits());
-            dados.getSemaforoRobo().acquire();
+        	
+        	dados.getGestor().pedirRobot();
             consolePrint("Esquerda, Angulo=" + dados.getAngulo() + ", Raio=" + dados.getRaio() + "\n");
 			dados.getRobot().CurvarEsquerda(dados.getRaio(), dados.getAngulo());
 			dados.getRobot().Parar(false);
 
-		} catch (InterruptedException ex) {
-            ex.printStackTrace();
-        } finally {
+		} finally {
             
             try {
-	            dados.getSemaforoRobo().release();
+            	dados.getGestor().devolverRobot();
             } catch (Exception ex) {
                 System.err.println("Erro ao liberar semáforo em escrever: " + ex.getMessage());
             }
@@ -477,18 +480,16 @@ JButton esquerdaloop = new JButton("\u21BA");
 	
 	private void direitaAction() {
 		try {
-        	System.out.println("✅ ACQUIRE TENTANDOOO CONSEGUIDO! Semáforo disponível: " + dados.getSemaforoRobo().availablePermits());
-            dados.getSemaforoRobo().acquire();
+        	
+        	dados.getGestor().pedirRobot();
 			consolePrint("Direita, Angulo=" + dados.getAngulo() + ", Raio=" + dados.getRaio() + "\n");
 			dados.getRobot().CurvarDireita(dados.getRaio(), dados.getAngulo());
 			dados.getRobot().Parar(false);
 
-		} catch (InterruptedException ex) {
-            ex.printStackTrace();
-        } finally {
+		} finally {
             
             try {
-	            dados.getSemaforoRobo().release();
+            	dados.getGestor().devolverRobot();
             } catch (Exception ex) {
                 System.err.println("Erro ao liberar semáforo em escrever: " + ex.getMessage());
             }
@@ -497,18 +498,16 @@ JButton esquerdaloop = new JButton("\u21BA");
 	
 	private void trasAction() {
 		try {
-        	System.out.println("✅ ACQUIRE TENTANDOOO CONSEGUIDO! Semáforo disponível: " + dados.getSemaforoRobo().availablePermits());
-            dados.getSemaforoRobo().acquire();
+        	
+        	dados.getGestor().pedirRobot();
             consolePrint("Tras, Distancia=" + dados.getDistancia() + "\n");
             int temp = dados.getDistancia();
             dados.getRobot().Reta(-temp);
             dados.getRobot().Parar(false);
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
         } finally {
             
             try {
-	            dados.getSemaforoRobo().release();
+            	dados.getGestor().devolverRobot();
             } catch (Exception ex) {
                 System.err.println("Erro ao liberar semáforo em escrever: " + ex.getMessage());
             }
@@ -516,10 +515,7 @@ JButton esquerdaloop = new JButton("\u21BA");
 	}
 	
 	
-	private void pararAction() {
-		dados.getRobot().Parar(true);
-		consolePrint("Parou!");
-	}
+	
 		
 	
 	
