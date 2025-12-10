@@ -350,7 +350,8 @@ JButton esquerdaloop = new JButton("\u21BA");
         JButton tresPontosButton = new JButton("...");
         tresPontosButton.setVerticalAlignment(SwingConstants.BOTTOM);
         tresPontosButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        tresPontosButton.setBounds(425, 291, 39, 21);
+        tresPontosButton.setBounds(425, 293, 39, 19);
+        tresPontosButton.setBackground(Color.decode("#f0f0f0"));
         contentPane.add(tresPontosButton);
         
         JLabel ficheiroLabel = new JLabel("Ficheiro");
