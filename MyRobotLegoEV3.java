@@ -2,16 +2,30 @@
 public class MyRobotLegoEV3  extends Thread implements iRobotLegoEV3 {
 	RobotLegoEV3 robot;
 	BufferCircularM buffer;
+	Comando c;
 	private static int VEL_ROBOT = 20;
 	boolean movAlF = false;
 	int sensor = robot.S_1;
+	GestorRobot gestor;
 	
-	//criar nova classe sensor aqui
+	
+	
+	
+	
+	
+	
+
 	
 	public MyRobotLegoEV3(){
 		buffer = new BufferCircularM();
 		robot = new RobotLegoEV3(); 
 		
+	}
+	
+	
+	
+	public void setGestor(GestorRobot newGestor) {
+		gestor = newGestor;
 	}
 	
 	
@@ -33,15 +47,23 @@ public class MyRobotLegoEV3  extends Thread implements iRobotLegoEV3 {
 		
 	}
 	public boolean OpenEV3(String nome) {
-		return(robot.OpenEV3(nome));
+		boolean teste = robot.OpenEV3(nome);
+		//System.out.println(teste);
+		return(teste);
 	}
 	
 	public void Parar(boolean con) {
 		Comando c = new Comando(Comando.ID_Parar, con);	
 		buffer.escrever(c);
 	}
+	public void PararSensor(boolean con) {
+		robot.Parar(con);
+		buffer.limparBuffer();
+		
+	}
 	public void CloseEV3() {
 		robot.CloseEV3();
+		
 		
 	}
 	
@@ -49,6 +71,10 @@ public class MyRobotLegoEV3  extends Thread implements iRobotLegoEV3 {
 		return robot.SensorToque(sensor);
 	}
 	
+	
+	public Comando getC() {
+		return c;
+	}
 	
 
 	
@@ -59,40 +85,58 @@ public class MyRobotLegoEV3  extends Thread implements iRobotLegoEV3 {
 	
 	
 	public void run() {
+		
+			   
+		       System.out.println("Sensor de toque iniciado.");
+		    
 	    while (true) {  
 	        try {
-	           
-
-	            Comando c = buffer.ler();  // BLOQUEIA até um comando chegar
+	        	
+	        	 
+                
+	             c = buffer.ler(); 
+	            
+	            
 
 	            if (c == null) {
 	                System.out.println("Comando nulo recebido. Continuando a esperar...");
-	                continue; // Em vez de parar, volta a esperar
+	                continue;
 	            }
+	            gestor.pedirVIP();
 
 	            switch (c.getArgID()) {
 	                case 1:
 	                    System.out.println("Executando RETA de " + c.getArg1() + " cm");
+	                   
+	                    
 	                    robot.Reta(c.getArg1());
+	                    gestor.devolverVIP();
 	                    Thread.sleep(RobotSleep.calculateSleepForReta(c.getArg1()));
+	                    
 	                    break;
 
 	                case 2:
 	                    System.out.println("Executando CURVA ESQUERDA...");
 	                    robot.CurvarEsquerda(c.getArg1(), c.getArg2());
+	                    gestor.devolverVIP();
 	                    Thread.sleep(RobotSleep.calculateSleepForCurva(c.getArg2(), c.getArg1()));
+	                    
 	                    break;
 
 	                case 3:
 	                    System.out.println("Executando CURVA DIREITA...");
 	                    robot.CurvarDireita(c.getArg1(), c.getArg2());
+	                    gestor.devolverVIP();
 	                    Thread.sleep(RobotSleep.calculateSleepForCurva(c.getArg2(), c.getArg1()));
+	                   
 	                    break;
 
 	                case 0:
 	                    System.out.println("Executando PARAR: con=" + c.getArg1B());
 	                    robot.Parar(c.getArg1B());
+	                    gestor.devolverVIP();
 	                    Thread.sleep(100);
+	                   
 	                    // Não finaliza mais
 	                    break;
 
@@ -100,6 +144,10 @@ public class MyRobotLegoEV3  extends Thread implements iRobotLegoEV3 {
 	                    System.out.println("Comando desconhecido: " + c.getArgID() + " - Ignorando.");
 	                    break;
 	            }
+	            
+	           System.out.println("HUMM.");
+	            
+	            
 
 	           
 
