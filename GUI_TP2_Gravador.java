@@ -139,7 +139,7 @@ public class GUI_TP2_Gravador extends JFrame {
 		robotTextFeild = new JTextField();
 		
 		
-		robotTextFeild.setText("ZE");
+		robotTextFeild.setText("EV2");
 		robotTextFeild.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		robotTextFeild.setColumns(10);
 		robotTextFeild.setBounds(405, 30, 34, 19);
@@ -304,8 +304,8 @@ JButton esquerdaloop = new JButton("\u21BA");
         
         JButton limparConsolaButton = new JButton("Limpar");
         limparConsolaButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        limparConsolaButton.setBackground(new Color(192, 192, 192));
-        limparConsolaButton.setBounds(89, 478, 85, 21);
+        limparConsolaButton.setBackground(Color.decode("#f0f0f0"));
+        limparConsolaButton.setBounds(89, 473, 85, 21);
         contentPane.add(limparConsolaButton);
         
         Box robotBox = Box.createHorizontalBox();
@@ -314,9 +314,10 @@ JButton esquerdaloop = new JButton("\u21BA");
         contentPane.add(robotBox);
         
         printConsolaCheckBox = new JCheckBox("Imprimir");
+        printConsolaCheckBox.setSelected(true);
         printConsolaCheckBox.setFont(new Font("Tahoma", Font.PLAIN, 15));
         printConsolaCheckBox.setBackground(new Color(192, 192, 192));
-        printConsolaCheckBox.setBounds(241, 478, 93, 21);
+        printConsolaCheckBox.setBounds(241, 473, 93, 21);
         contentPane.add(printConsolaCheckBox);
         
         Box consolaBox = Box.createHorizontalBox();
@@ -558,7 +559,7 @@ JButton esquerdaloop = new JButton("\u21BA");
 		reproduzirButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		
-        		 ReplayThread replay = dados.getReplay();
+        		ReplayThread replay = dados.getReplay();
  	            if (replay.getEstado() == Estado.ACTIVE) {
  	            	consolePrint("entrou no IF == ESTAVA ACTIVE");
  	                replay.setEstado(Estado.NOT_ACTIVE);  
