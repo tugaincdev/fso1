@@ -325,13 +325,16 @@ JButton esquerdaloop = new JButton("\u21BA");
         contentPane.add(consolaBox);
         
         JButton gravarButton = new JButton("Gravar");
+        gravarButton.setForeground(new Color(0, 0, 0));
         gravarButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
         gravarButton.setBounds(89, 322, 129, 21);
+        gravarButton.setBackground(Color.decode("#f0f0f0"));
         contentPane.add(gravarButton);
         
         JButton reproduzirButton = new JButton("Reproduzir");
         reproduzirButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
         reproduzirButton.setBounds(226, 322, 146, 21);
+        reproduzirButton.setBackground(Color.decode("#f0f0f0"));
         contentPane.add(reproduzirButton);
         
         JButton tresPontosButton = new JButton("...");
@@ -532,11 +535,16 @@ JButton esquerdaloop = new JButton("\u21BA");
 		        
 	            RecorderThread recorder = dados.getRecorder();
 	            if (recorder.getEstado() == Estado.ACTIVE) {
-	                recorder.setEstado(Estado.NOT_ACTIVE);  
+	                recorder.setEstado(Estado.NOT_ACTIVE);
+	                gravarButton.setBackground(Color.decode("#f0f0f0"));
+	                reproduzirButton.setBackground(Color.decode("#f0f0f0"));
+	                reproduzirButton.setEnabled(true);
 	                consolePrint("Recorder estado NOT_ACTIVE");
 	               
 	            } else {
 	                recorder.setEstado(Estado.ACTIVE);  
+	                gravarButton.setBackground(Color.GREEN);
+	                reproduzirButton.setEnabled(false);
 	                consolePrint("Recorder estado ACTIVE");
 	                
 	            }
@@ -552,11 +560,18 @@ JButton esquerdaloop = new JButton("\u21BA");
         		
         		 ReplayThread replay = dados.getReplay();
  	            if (replay.getEstado() == Estado.ACTIVE) {
+ 	            	consolePrint("entrou no IF == ESTAVA ACTIVE");
  	                replay.setEstado(Estado.NOT_ACTIVE);  
+ 	                reproduzirButton.setBackground(Color.decode("#f0f0f0"));
+	                gravarButton.setBackground(Color.decode("#f0f0f0"));
+	                gravarButton.setEnabled(true);
  	                consolePrint("Replay estado NOT_ACTIVE");
  	               
  	            } else {
+ 	            	consolePrint("entrou no ELSE == ESTAVA INACTIVE");
  	                replay.setEstado(Estado.ACTIVE);  
+ 	                reproduzirButton.setBackground(Color.GREEN);
+	                gravarButton.setEnabled(false);
  	                consolePrint("Replay  estado ACTIVE");
  	                
  	            }
