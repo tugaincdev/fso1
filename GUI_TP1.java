@@ -77,7 +77,7 @@ public class GUI_TP1 extends JFrame {
 	 */
 	public GUI_TP1() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 504, 452);
+		setBounds(100, 100, 504, 457);
 		contentPane = new JPanel();
 		contentPane.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		contentPane.setBackground(new Color(192, 192, 192));
@@ -85,11 +85,12 @@ public class GUI_TP1 extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		
-		
         Box robotBox = Box.createHorizontalBox();
-        robotBox.setBorder(new LineBorder(new Color(0, 0, 0)));
-        robotBox.setBounds(10, 20, 470, 234);
+        robotBox.setBorder(new TitledBorder(
+        	    new LineBorder(new Color(0, 0, 0)),
+        	    "Robot"
+        	));
+        robotBox.setBounds(10, 13, 470, 242);
         contentPane.add(robotBox);
 		
 		
@@ -214,7 +215,7 @@ public class GUI_TP1 extends JFrame {
 		contentPane.add(esquerdaButton);
 		
 		JScrollPane consolaPane = new JScrollPane();
-		consolaPane.setBounds(37, 282, 402, 94);
+		consolaPane.setBounds(37, 287, 402, 94);
 		contentPane.add(consolaPane);
 		
 		textArea = new JTextArea();
@@ -311,19 +312,22 @@ JButton esquerdaloop = new JButton("\u21BA");
         JButton limparConsolaButton = new JButton("Limpar");
         limparConsolaButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
         limparConsolaButton.setBackground(Color.decode("#f0f0f0"));
-        limparConsolaButton.setBounds(89, 381, 85, 21);
+        limparConsolaButton.setBounds(89, 386, 85, 21);
         contentPane.add(limparConsolaButton);
         
         printConsolaCheckBox = new JCheckBox("Imprimir");
         printConsolaCheckBox.setSelected(true);
         printConsolaCheckBox.setFont(new Font("Tahoma", Font.PLAIN, 15));
         printConsolaCheckBox.setBackground(new Color(192, 192, 192));
-        printConsolaCheckBox.setBounds(241, 381, 93, 21);
+        printConsolaCheckBox.setBounds(241, 386, 93, 21);
         contentPane.add(printConsolaCheckBox);
         
         Box consolaBox = Box.createHorizontalBox();
-        consolaBox.setBorder(new LineBorder(new Color(0, 0, 0)));
-        consolaBox.setBounds(10, 276, 470, 132);
+        consolaBox.setBorder(new TitledBorder(
+        	    new LineBorder(new Color(0, 0, 0)),
+        	    "Consola"
+        	));
+        consolaBox.setBounds(8, 268, 474, 145);
         contentPane.add(consolaBox);
 		
 		
