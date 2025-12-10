@@ -242,22 +242,23 @@ public class GUI_TP1 extends JFrame {
 		
 		JRadioButton movAleatorioRadioButton = new JRadioButton("Movimentos Aleatorios");
 		movAleatorioRadioButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				 if (movAleatorioRadioButton.isSelected()) {
-			            
-			            movimentosAl = new MovimentosAleatorios();
-			            movimentosAl.setDados(dados);
-			            movimentosAl.start();
-			            System.out.println("Started random movements");
-			        } else {
-			            
-			            if (movimentosAl != null) {
-			                movimentosAl.stopRunning();
-			                System.out.println("Stopped random movements");
-			            }
-			        }
-			    }
-			
+		    public void actionPerformed(ActionEvent e) {
+
+		        if (movAleatorioRadioButton.isSelected()) {
+
+		            movimentosAl = new MovimentosAleatorios();
+		            movimentosAl.setDados(dados);
+		            movimentosAl.start();
+		            System.out.println("Started random movements");
+
+		        } else {
+
+		            if (movimentosAl != null) {
+		                movimentosAl.stopRunning();
+		                System.out.println("Stopped random movements");
+		            }
+		        }
+		    }
 		});
 		movAleatorioRadioButton.setContentAreaFilled(false);
 		movAleatorioRadioButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -329,6 +330,22 @@ JButton esquerdaloop = new JButton("\u21BA");
         	));
         consolaBox.setBounds(8, 268, 474, 145);
         contentPane.add(consolaBox);
+
+		 this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                if (dados != null && dados.getRobot() != null) {
+                    try {
+                        dados.getRobot().PararSensor(true);
+						Thread.sleep(300);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+                System.out.println("Robot stopped on app close.");
+            }
+        });
+
 		
 		
 		//EVENTS
