@@ -79,7 +79,7 @@ public class GUI_TP2_Gravador extends JFrame {
 	 */
 	public GUI_TP2_Gravador() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 504, 544);
+		setBounds(590, 100, 504, 544);
 		contentPane = new JPanel();
 		contentPane.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		contentPane.setBackground(new Color(192, 192, 192));
