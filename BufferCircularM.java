@@ -6,6 +6,11 @@ public class BufferCircularM {
     private Comando[] buffer;
     private int putBuffer, getBuffer;
     
+    
+    
+    // TEMOSQUE LIMPAR O BUFFER SEMPRE QUE FAZEMOS UM PARAR COM TRUE OK!!==!=!?!?!?!!?!?
+    
+    
     public BufferCircularM() {
         livres = new Semaphore(dimBuffer);
         ocupados = new Semaphore(0);
@@ -23,19 +28,18 @@ public class BufferCircularM {
             buffer[putBuffer] = c;
             putBuffer = ++putBuffer % dimBuffer;
          
-            System.out.println(">>> Comando recebido e escrito no buffer! Índice: " + (putBuffer - 1) % dimBuffer + 
-                              ", Comando: " + c.toString() );  
+            
             
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            System.err.println("Thread interrupted while writing to buffer: " + e.getMessage());
+            System.err.println("Thread interrupted: " + e.getMessage());
         } finally {
             
             try {
                 acesso.release();
                 ocupados.release();
             } catch (Exception ex) {
-                System.err.println("Erro ao liberar semáforos em escrever: " + ex.getMessage());
+                System.err.println("Erro: " + ex.getMessage());
             }
         }
     }
@@ -43,24 +47,43 @@ public class BufferCircularM {
     public Comando ler() {
         Comando c = null;
         try {
-        	System.out.println("adeus1");
+        	
             ocupados.acquire(); 
             acesso.acquire();   
             c = buffer[getBuffer]; 
             getBuffer = ++getBuffer % dimBuffer; 
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            System.err.println("Thread interrupted while reading from buffer: " + e.getMessage());
+            System.err.println("Thread: " + e.getMessage());
         } finally {
             
             try {
                 acesso.release();
                 livres.release();
             } catch (Exception ex) {
-                System.err.println("Erro ao liberar semáforos em ler: " + ex.getMessage());
+                System.err.println("Erro: " + ex.getMessage());
             }
         }
         return c;
+    }
+    
+    public void limparBuffer() {
+        try {
+            acesso.acquire();
+            
+            // Reseta tudo
+            ocupados.drainPermits();
+            livres.drainPermits();
+            livres.release(dimBuffer);
+            
+            putBuffer = 0;
+            getBuffer = 0;
+            
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } finally {
+            acesso.release();
+        }
     }
     
 }
