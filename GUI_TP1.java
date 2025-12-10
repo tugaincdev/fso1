@@ -7,12 +7,14 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import java.awt.Color;
 import javax.swing.JCheckBox;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
@@ -37,7 +39,9 @@ public class GUI_TP1 extends JFrame {
 	private JTextField robotTextFeild;
 	private Dados dados;
 	private JTextArea textArea;
-	 private MovimentosAleatorios movimentosAl;
+	private MovimentosAleatorios movimentosAl;
+	private JCheckBox printConsolaCheckBox;
+
 	
 	
 	  public void setMovimentosAl(MovimentosAleatorios movimentosAl) {
@@ -73,7 +77,7 @@ public class GUI_TP1 extends JFrame {
 	 */
 	public GUI_TP1() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 504, 414);
+		setBounds(100, 100, 504, 452);
 		contentPane = new JPanel();
 		contentPane.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		contentPane.setBackground(new Color(192, 192, 192));
@@ -83,29 +87,32 @@ public class GUI_TP1 extends JFrame {
 		
 		
 		
-		
+        Box robotBox = Box.createHorizontalBox();
+        robotBox.setBorder(new LineBorder(new Color(0, 0, 0)));
+        robotBox.setBounds(10, 20, 470, 234);
+        contentPane.add(robotBox);
 		
 		
 		JLabel raioLable = new JLabel("Raio");
 		raioLable.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		raioLable.setBounds(10, 10, 34, 31);
+		raioLable.setBounds(34, 24, 34, 31);
 		contentPane.add(raioLable);
 		
-		JLabel anguloLable = new JLabel("Ângulo");
+		JLabel anguloLable = new JLabel("Angulo");
 		anguloLable.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		anguloLable.setBounds(89, 10, 52, 31);
+		anguloLable.setBounds(113, 24, 52, 31);
 		contentPane.add(anguloLable);
 		
-		JLabel distanciaLabel = new JLabel("Distância");
+		JLabel distanciaLabel = new JLabel("Distancia");
 		distanciaLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		distanciaLabel.setBounds(180, 10, 66, 31);
+		distanciaLabel.setBounds(204, 24, 66, 31);
 		contentPane.add(distanciaLabel);
 		
 		raioTextFeild = new JTextField();
 		
 		raioTextFeild.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		raioTextFeild.setText("20");
-		raioTextFeild.setBounds(37, 16, 34, 19);
+		raioTextFeild.setBounds(64, 30, 34, 19);
 		contentPane.add(raioTextFeild);
 		raioTextFeild.setColumns(10);
 		
@@ -114,7 +121,7 @@ public class GUI_TP1 extends JFrame {
 		anguloTextFeild.setText("20");
 		anguloTextFeild.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		anguloTextFeild.setColumns(10);
-		anguloTextFeild.setBounds(136, 16, 34, 19);
+		anguloTextFeild.setBounds(160, 30, 34, 19);
 		contentPane.add(anguloTextFeild);
 		
 		distanciaTextFeild = new JTextField();
@@ -122,21 +129,21 @@ public class GUI_TP1 extends JFrame {
 		distanciaTextFeild.setText("20");
 		distanciaTextFeild.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		distanciaTextFeild.setColumns(10);
-		distanciaTextFeild.setBounds(241, 16, 34, 19);
+		distanciaTextFeild.setBounds(265, 30, 34, 19);
 		contentPane.add(distanciaTextFeild);
 		
 		JLabel robotLable = new JLabel("Robot");
 		robotLable.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		robotLable.setBounds(365, 10, 39, 31);
+		robotLable.setBounds(365, 24, 39, 31);
 		contentPane.add(robotLable);
 		
 		robotTextFeild = new JTextField();
 		
 		
-		robotTextFeild.setText("ZE");
+		robotTextFeild.setText("EV2");
 		robotTextFeild.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		robotTextFeild.setColumns(10);
-		robotTextFeild.setBounds(405, 16, 34, 19);
+		robotTextFeild.setBounds(405, 30, 34, 19);
 		contentPane.add(robotTextFeild);
 		
 		
@@ -151,9 +158,9 @@ public class GUI_TP1 extends JFrame {
                     if(dados.getRobot().OpenEV3(dados.getNomeRobot())) {
                     	System.out.println("SEGUNDO IF");
                         dados.setOnOff(true);
+                        System.out.println(dados.isOnOff());
                         consolePrint("open");
                     }
-                    
                 }
                 else {
                 	System.out.println("ELSE");
@@ -167,7 +174,7 @@ public class GUI_TP1 extends JFrame {
 		
 		blueCheckBox.setContentAreaFilled(false);
 		blueCheckBox.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		blueCheckBox.setBounds(365, 41, 97, 21);
+		blueCheckBox.setBounds(365, 55, 97, 21);
 		contentPane.add(blueCheckBox);
 		
 		JButton frenteButton = new JButton("FRENTE");
@@ -183,7 +190,7 @@ public class GUI_TP1 extends JFrame {
 		pararButton.setBounds(180, 125, 119, 37);
 		contentPane.add(pararButton);
 		
-		JButton trasButton = new JButton("TRÁS");
+		JButton trasButton = new JButton("TRÀS");
 		trasButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -207,7 +214,7 @@ public class GUI_TP1 extends JFrame {
 		contentPane.add(esquerdaButton);
 		
 		JScrollPane consolaPane = new JScrollPane();
-		consolaPane.setBounds(37, 265, 402, 94);
+		consolaPane.setBounds(37, 282, 402, 94);
 		contentPane.add(consolaPane);
 		
 		textArea = new JTextArea();
@@ -256,10 +263,10 @@ public class GUI_TP1 extends JFrame {
 		movAleatorioRadioButton.setBounds(281, 212, 181, 32);
 		contentPane.add(movAleatorioRadioButton);
 		
-		JLabel consolaLabel = new JLabel("Consola");
-		consolaLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		consolaLabel.setBounds(38, 230, 61, 31);
-		contentPane.add(consolaLabel);
+		//JLabel consolaLabel = new JLabel("Consola");
+		//consolaLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		//consolaLabel.setBounds(38, 230, 61, 31);
+		//contentPane.add(consolaLabel);
 		
 		JCheckBox simulateCheckBox = new JCheckBox("Simular");
 		
@@ -274,7 +281,7 @@ public class GUI_TP1 extends JFrame {
 		
 		simulateCheckBox.setContentAreaFilled(false);
 		simulateCheckBox.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		simulateCheckBox.setBounds(10, 41, 93, 21);
+		simulateCheckBox.setBounds(34, 55, 93, 21);
 		contentPane.add(simulateCheckBox);
 		
 JButton esquerdaloop = new JButton("\u21BA");
@@ -300,6 +307,24 @@ JButton esquerdaloop = new JButton("\u21BA");
         direitaloop.setBackground(new Color(0, 128, 255));
         direitaloop.setBounds(367, 86, 52, 37);
         contentPane.add(direitaloop);
+        
+        JButton limparConsolaButton = new JButton("Limpar");
+        limparConsolaButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        limparConsolaButton.setBackground(Color.decode("#f0f0f0"));
+        limparConsolaButton.setBounds(89, 381, 85, 21);
+        contentPane.add(limparConsolaButton);
+        
+        printConsolaCheckBox = new JCheckBox("Imprimir");
+        printConsolaCheckBox.setSelected(true);
+        printConsolaCheckBox.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        printConsolaCheckBox.setBackground(new Color(192, 192, 192));
+        printConsolaCheckBox.setBounds(241, 381, 93, 21);
+        contentPane.add(printConsolaCheckBox);
+        
+        Box consolaBox = Box.createHorizontalBox();
+        consolaBox.setBorder(new LineBorder(new Color(0, 0, 0)));
+        consolaBox.setBounds(10, 276, 470, 132);
+        contentPane.add(consolaBox);
 		
 		
 		//EVENTS
@@ -417,7 +442,18 @@ JButton esquerdaloop = new JButton("\u21BA");
 		});
 		
 	
+		limparConsolaButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+				consolePrint("Carregou no botão limpar consola");
+				textArea.setText("");
+        	}
+        });
 		
+		printConsolaCheckBox.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+				consolePrint("Carregou na checkBox imprimir da consola");
+        	}
+        });
 		
 		
 		
@@ -434,7 +470,9 @@ JButton esquerdaloop = new JButton("\u21BA");
 	}
 	
 	public void consolePrint(String s) {
-		textArea.append(s + "\n");
+		if (printConsolaCheckBox.isSelected()) {
+			textArea.append(s + "\n");
+		}
 	}
 	
 	
