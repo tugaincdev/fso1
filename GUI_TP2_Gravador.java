@@ -240,22 +240,23 @@ public class GUI_TP2_Gravador extends JFrame {
 		
 		JRadioButton movAleatorioRadioButton = new JRadioButton("Movimentos Aleatorios");
 		movAleatorioRadioButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				 if (movAleatorioRadioButton.isSelected()) {
-			            
-			            movimentosAl = new MovimentosAleatorios();
-			            movimentosAl.setDados(dados);
-			            movimentosAl.start();
-			            System.out.println("Started random movements");
-			        } else {
-			            
-			            if (movimentosAl != null) {
-			                movimentosAl.stopRunning();
-			                System.out.println("Stopped random movements");
-			            }
-			        }
-			    }
-			
+		    public void actionPerformed(ActionEvent e) {
+
+		        if (movAleatorioRadioButton.isSelected()) {
+
+		            movimentosAl = new MovimentosAleatorios();
+		            movimentosAl.setDados(dados);
+		            movimentosAl.start();
+		            System.out.println("Started random movements");
+
+		        } else {
+
+		            if (movimentosAl != null) {
+		                movimentosAl.stopRunning();
+		                System.out.println("Stopped random movements");
+		            }
+		        }
+		    }
 		});
 		movAleatorioRadioButton.setContentAreaFilled(false);
 		movAleatorioRadioButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -371,6 +372,23 @@ JButton esquerdaloop = new JButton("\u21BA");
         	));
         gravadorBox.setBounds(8, 268, 474, 85);
         contentPane.add(gravadorBox);
+
+		 this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                if (dados != null && dados.getRobot() != null) {
+                    try {
+                    	System.out.println("DEU CERTO DESLIGOU?");
+                        dados.getRobot().PararSensor(true);
+                        Thread.sleep(300);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+                dados.getRobot().PararSensor(true);
+                System.out.println("Robot stopped on app close.");
+            }
+        });
 		
 		
 		//EVENTS
