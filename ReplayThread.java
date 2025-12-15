@@ -20,6 +20,8 @@ public class ReplayThread extends Thread {
         while (state != Estado.CLOSED) {
 
             if (state == Estado.ACTIVE) {
+            	
+            	dados.getGestor().pedirRobot();
 
                 // When replay starts → reopen file so it replays from start
                 if (justActivated) {
@@ -35,6 +37,18 @@ public class ReplayThread extends Thread {
                 }
 
                 try {
+                	 
+                    long timeDelta = in.readLong();
+                    
+                    
+                    if (timeDelta > 0) {
+                        System.out.println("[REPLAY] Waiting " + timeDelta + "ms before next command...");
+                        Thread.sleep(timeDelta);
+                    }
+                	
+                	
+                	
+                	
                     // Read one command
                     int argID = in.readInt();
                     int arg1 = in.readInt();
@@ -73,11 +87,16 @@ public class ReplayThread extends Thread {
 
                 } catch (EOFException e) {
                     System.out.println("[REPLAY] End of file reached – replay complete.");
-                    state = Estado.NOT_ACTIVE;  // allow replay again
+                    
                 } catch (IOException e) {
                     System.err.println("IO error during replay: " + e);
                     state = Estado.CLOSED;
-                }
+                } catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                
+              dados.getGestor().devolverRobot();
 
             } else {
                 // Not active → sleep lightly
