@@ -10,6 +10,7 @@ public class RecorderThread extends Thread {
     private Comando lastCommand = null;
     private boolean justActivated = false;
     private String currentFilename;
+    private long lastCommandTime = 0;
 
 
 
@@ -32,6 +33,7 @@ public class RecorderThread extends Thread {
         	            out = new DataOutputStream(new FileOutputStream(currentFilename, false));
 
         	            lastCommand = null; 
+        	            lastCommandTime = 0;
         	            System.out.println("[RECORDER] Started new recording (file cleared)");
         	        } catch (IOException e) {
         	            e.printStackTrace();
@@ -51,6 +53,19 @@ public class RecorderThread extends Thread {
                 // Only record if it's NEW (not the same object and not equal)
                 if (!c.equals(lastCommand)) {
                     try {
+                    	
+                    	
+                    	long currentTime = System.currentTimeMillis();
+                        long timeDelta = 0;
+                        
+                        // Calculate time since last command (ignore first command)
+                        if (lastCommandTime != 0) {
+                            timeDelta = currentTime - lastCommandTime;
+                        }
+                    	
+                        
+                        out.writeLong(timeDelta);
+                    	
                         out.writeInt(c.getArgID());
                         out.writeInt(c.getArg1());
                         out.writeInt(c.getArg2());
@@ -60,6 +75,7 @@ public class RecorderThread extends Thread {
                         System.out.println("[RECORDER] Wrote NEW command: " + c);
 
                         lastCommand = c; // update last recorded
+                        lastCommandTime = currentTime;
 
                     } catch (IOException e) {
                         e.printStackTrace();
